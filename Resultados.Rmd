@@ -1,0 +1,120 @@
+---
+title: "Resultados"
+author: "Cristiano Santos"
+date: "20 de abril de 2018"
+output: 
+  word_document: 
+    fig_height: 10
+    fig_width: 8
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+load("resultados.RData")
+source("R/functions.R")
+library(ggplot2)
+```
+
+## Resultados
+
+
+```{r fig1, echo=FALSE}
+colnames(mY) <- c("PIB", 
+                  "Inflação", 
+                  "Juros real", 
+                  "desemprego")
+p <- tsplot(mY, mnr_med)
+p <- p + annotate("rect", xmin=mTP$Trough, xmax=mTP$Peak,
+                  ymin=-Inf, ymax=Inf, alpha=.2, fill="red")
+p 
+```
+
+Fig. 1 Actual and natural rates. The solid line is the actual rate; the dashed line is the natural rate. The shaded areas indicate the NBER recessions
+
+
+
+```{r fig2, echo=FALSE}
+colnames(mgap_med) <- c("PIB", 
+                  "inflação", 
+                  "juros real", 
+                  "desemprego")
+p <- bitsplot(x = mgap_med, lower = mgap_lower, upper = mgap_upper)
+p <- p + annotate("rect", xmin=mTP$Trough, xmax=mTP$Peak,
+                  ymin=-Inf, ymax=Inf, alpha=.2, fill="red")
+p <- p + theme(panel.grid.major.y = element_blank(),
+panel.grid.minor.y = element_blank())
+p <- p + geom_hline(yintercept = 0, size = 0.2)
+p
+```
+
+Fig. 2 Gaps. The dashed lines are the 0.025- and 0.975-quantiles. The shaded areas indicate the NBER recessions
+
+
+```{r fig3, echo=FALSE}
+
+library(gridExtra)
+p1 <- DrawScatter(mgap_med, "PIB", "inflação")
+p2 <- DrawPDF(amcorr[2, 1,], "coeficiente de correlação")
+p3 <- DrawScatter(mgap_med, "desemprego", "inflação")
+p4 <- DrawPDF(amcorr[2, 4,], "coeficiente de correlação")
+p5 <- DrawScatter(mgap_med, "desemprego", "PIB")
+p6 <- DrawPDF(amcorr[1, 4,], "coeficiente de correlação")
+
+grid.arrange(p1, p2, p3, p4, p5, p6, ncol=2)
+```
+
+Fig. 3 Phillips curve andOkun’s law.The left panels are the scatter plots of the simulated posteriormedians of the gaps in each quarter; the right panels are the simulated posterior pdfs of the correlation coefficients between the gaps
+
+
+```{r fig4, echo=FALSE}
+colnames(mgapDI) <- c("PIB", 
+                  "Inflação", 
+                  "Juros real", 
+                  "desemprego")
+p <- tsplot(mgapDI)
+p <- p + annotate("rect", xmin=mTP$Trough, xmax=mTP$Peak,
+                  ymin=-Inf, ymax=Inf, alpha=.2, fill="red")
+p <- p + theme(panel.grid.major.y = element_blank(),
+panel.grid.minor.y = element_blank())
+p <- p + geom_hline(yintercept = 0.5, size = 0.2)
+p 
+```
+
+
+Fig. 4 Posterior probability of positive gap. The shaded areas indicate the NBER recessions
+
+
+```{r fig5, echo=FALSE}
+colnames(mets) <- c("PIB", 
+                  "Inflação", 
+                  "Juros real", 
+                  "desemprego")
+p <- tsplot(mets)
+p <- p + annotate("rect", xmin=mTP$Trough, xmax=mTP$Peak,
+                  ymin=-Inf, ymax=Inf, alpha=.2, fill="red")
+p <- p + theme(panel.grid.major.y = element_blank(),
+panel.grid.minor.y = element_blank())
+p <- p + geom_hline(yintercept = 0.5, size = 0.2)
+p 
+```
+
+Fig. 5 Posterior probability of recession. The shaded areas indicate the NBER recessions
+
+
+```{r fig6, echo=FALSE}
+colnames(mcts) <- c("PIB", 
+                  "Inflação", 
+                  "Juros real", 
+                  "desemprego")
+p <- tsplot(mcts)
+p <- p + annotate("rect", xmin=mTP$Trough, xmax=mTP$Peak,
+                  ymin=-Inf, ymax=Inf, alpha=.2, fill="red")
+p <- p + theme(panel.grid.major.y = element_blank(),
+panel.grid.minor.y = element_blank())
+p <- p + geom_hline(yintercept = 0.5, size = 0.2)
+p 
+```
+
+
+Fig. 6 Posterior probability of revival. The shaded areas indicate the NBER recessions
+
